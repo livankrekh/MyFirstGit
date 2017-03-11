@@ -20,11 +20,10 @@ char	*get_setting(char *ptr, char *type)
 	res = ft_strnew(ft_strlen(ptr) - ft_strlen(ft_strchr(ptr,
 		type[ft_strlen(type) - 1]) + 1));
 	i = 0;
-	while ((ptr[i] == '#' || ptr[i] == '-' || ptr[i] == ' ' || ptr[i] == '.' ||
-		ft_isalnum(ptr[i]) || ptr[i] == '+' || ptr[i] == '*') && ptr[i] != '\0')
+	while (valid_setting(ptr[i]) && ptr[i] != '\0')
 	{
 		if (ptr[i] == '#' || ptr[i] == '-' || ptr[i] == ' ' || ptr[i] == '+' ||
-			(ptr[i] == '0' && !ft_isdigit(ptr[i - 1])))
+			(ptr[i] == '0' && !ft_isdigit(ptr[i - 1])) || ptr[i] == '.')
 			ft_strncat(res, ptr + i, 1);
 		i++;
 	}
@@ -75,7 +74,8 @@ void	dop(va_list ap, char *type, t_arg *arg)
 			!ft_strncmp(type, "llx", 3) || !ft_strncmp(type, "llX", 3))
 		arg->undata = va_arg(ap, unsigned long long int);
 	else if (!ft_strncmp(type, "lu", 2) || !ft_strncmp(type, "lo", 2) ||
-			!ft_strncmp(type, "lx", 2) || !ft_strncmp(type, "lX", 2))
+			!ft_strncmp(type, "lx", 2) || !ft_strncmp(type, "lX", 2) ||
+			ft_strchr(type, 'O') || ft_strchr(type, 'U'))
 		arg->undata = va_arg(ap, unsigned long int);
 	else if (!ft_strncmp(type, "ju", 2) || !ft_strncmp(type, "jo", 2) ||
 			!ft_strncmp(type, "jx", 2) || !ft_strncmp(type, "jX", 2))
@@ -102,7 +102,8 @@ void	get_data(va_list ap, char *type, t_arg *arg)
 			arg->data_numb = (int)va_arg(ap, int);
 		else if (!ft_strncmp(type, "hd", 2) || !ft_strncmp(type, "hi", 2))
 			arg->data_numb = (short int)va_arg(ap, int);
-		else if (!ft_strncmp(type, "ld", 2) || !ft_strncmp(type, "li", 2))
+		else if (!ft_strncmp(type, "ld", 2) || !ft_strncmp(type, "li", 2) ||
+				ft_strchr(type, 'D'))
 			arg->data_numb = va_arg(ap, long int);
 		else if (!ft_strncmp(type, "lld", 3) || !ft_strncmp(type, "lli", 3))
 			arg->data_numb = va_arg(ap, long long int);
@@ -112,14 +113,3 @@ void	get_data(va_list ap, char *type, t_arg *arg)
 			dop(ap, type, arg);
 	}
 }
-
-	// char	*res;
-	// int		count;
-
-	// count = 0;
-	// while (!ft_isalpha(ptr[count]))
-	// 	count++;
-	// res = (char*)malloc(sizeof(char) * count + 1);
-	// res[count] = '\0';
-	// ft_strncpy(res, ptr, count);
-	// return (res);

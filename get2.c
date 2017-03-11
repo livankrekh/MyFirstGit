@@ -15,26 +15,27 @@
 void	get_width(char *setting, va_list ap, t_arg *arg)
 {
 	while ((*setting <= '0' || *setting > '9') && *setting != '*' &&
-			*setting != '.' && *setting != '\0')
+		*setting != '.' && *setting != '\0' &&
+		*setting != arg->type[ft_strlen(arg->type) - 1])
 		setting++;
 	if (ft_isdigit(*setting) || *setting == '*')
 	{
-		if (*setting == '*')
+		if (*setting == '*' || *(setting + 1) == '*')
 			arg->width = va_arg(ap, int);
 		else
-			arg->width = atoi(setting);
-		while (((!ft_isdigit(*(setting + 1)) || *(setting + 1) != '*') ||
-				*setting != '.') && *(setting + 1) != '\0')
-			setting++;
+			arg->width = ft_atoi(setting);
 	}
 	else
 		arg->width = 0;
+	while ((*setting != '.' || (!ft_isdigit(*(setting + 1)) &&
+		*(setting + 1) != '*')) && *setting != '\0')
+		setting++;
 	if (*setting == '.' && (ft_isdigit(*(setting + 1)) || *(setting + 1) == '*'))
 	{
 		if (*(setting + 1) == '*')
 			arg->accur = va_arg(ap, int);
 		else
-			arg->accur = atoi(setting + 1);
+			arg->accur = ft_atoi(setting + 1);
 	}
 	else
 		arg->accur = -1;
@@ -46,6 +47,16 @@ int		valid_setting(char c)
 		ft_isdigit(c) || c == '+' || c == '*' ||
 		c == 'l'|| c == 'h' || c == 'j' || c == 'z'
 		|| c == 'L'))
+		return (1);
+	return (0);
+}
+
+int		valid_type(char c)
+{
+	if (c == 'd' || c == 'D' || c == 'i' || c == 'o' || c == 'O' || c == 'u'
+		|| c == 'U' || c == 'x' || c == 'X' || c == 'p' || c == 'f' ||
+		c == 'F' || c == 'a' || c == 'A' || c == 'g' || c == 'G' ||
+		c == 'e' || c == 'E' || c == 'S' || c == 's' || c == 'c' || c == 'C')
 		return (1);
 	return (0);
 }
@@ -84,46 +95,3 @@ char	*get_type(char *ptr)
 	ft_strncat(res, &tmp[ft_strlen(tmp) - 1], 1);
 	return (res);
 }
-
-// char	*get_type(char *ptr)
-// {
-// 	char	*res;
-// 	int		count;
-
-// 	while (!ft_isalpha(*ptr))
-// 		ptr++;
-// 	if (ft_strnstr(ptr, "hh", 2) || ft_strnstr(ptr, "ll", 2))
-// 		count = 3;
-// 	else if (*ptr == 'h' || *ptr == 'l' || *ptr == 'j' ||
-// 				*ptr == 'z' || *ptr == 'L')
-// 		count = 2;
-// 	else
-// 		count = 1;
-// 	res = (char*)malloc(sizeof(char) * count + 1);
-// 	res[count] = '\0';
-// 	return (ft_strncpy(res, ptr, count));
-// }
-
-	// while (!ft_isdigit(*setting) && *setting != '.' && *setting != '\0')
-	// 	setting++;
-	// if (*setting == '0')
-	// 	setting++;
-	// if (ft_isdigit(*setting))
-	// 	arg->width = ft_atoi(setting);
-	// else if (*setting == '*')
-	// 	arg->width = va_arg(ap, int);
-	// else
-	// 	arg->width = 0;
-	// if (ft_strchr(setting, '.'))
-	// {
-	// 	setting = ft_strchr(setting, '.') + 1;
-	// 	if (ft_isdigit(*setting))
-	// 		arg->accur = ft_atoi(setting);
-	// 	else if (*setting == '*')
-	// 		arg->accur = va_arg(ap, int);
-	// 	else
-	// 		arg->accur = -1;
-	// }
-	// else
-	// 	arg->accur = -1;
-	// *setting = '\0';

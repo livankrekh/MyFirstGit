@@ -42,5 +42,8 @@ char				*create_d(t_arg arg);
 char				*create_un(t_arg arg, int base);
 char				*create_pointer(t_arg arg);
 char				*create_c(t_arg arg);
+int					valid_setting(char c);
+int					valid_type(char c);
+char				*repoint(char *ptr);
 
 #endif
