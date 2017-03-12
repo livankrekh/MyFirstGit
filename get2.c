@@ -81,7 +81,7 @@ char	*get_type(char *ptr)
 		ptr[i] == 's' || ptr[i] == 'S' || ptr[i] == 'p' || ptr[i] == 'O' ||
 		ptr[i] == 'U' || ptr[i] == 'D' || ptr[i] == '%')
 		ft_strncat(tmp, ptr + i, 1);
-	else
+	else if (*ptr != ptr[i])
 		ft_strncat(tmp, ptr + i - 1, 1);
 	if (ft_strchr(tmp, 'z'))
 		ft_strncat(res, "z", 1);

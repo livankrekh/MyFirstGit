@@ -25,7 +25,7 @@ char	*repoint(char *ptr)
 	return (ptr);
 }
 
-t_arg	*include(const char *format, va_list ap, int count, int *i)
+t_arg	*include(const char *format, va_list ap, int count)
 {
 	int		index;
 	t_arg	*map;
@@ -40,13 +40,12 @@ t_arg	*include(const char *format, va_list ap, int count, int *i)
 	{
 		ptr = ft_strchr(ptr, '%');
 		map[index].type = get_type(ptr + 1);
-		map[index].setting = get_setting(ptr + 1, map[index].type);
+		map[index].setting = get_setting(ptr + 1, map[index].type); // SEGV there
 		get_width(ptr + 1, ap, &(map[index]));
 		get_data(ap, map[index].type, &(map[index]));
 		ptr = repoint(ptr + 1);
 		index++;
 	}
-	*i = index;
 	return (map);
 }
 
@@ -87,7 +86,6 @@ int		ft_printf(const char *format, ...)
 	i = 0;
 	count = count_arg(format);
 	va_start(ap, format);
-	map = include(format, ap, count, &count);
-	va_end(ap);
+	map = include(format, ap, count);
 	return (print_string(map, format, count));
 }

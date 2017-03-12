@@ -33,13 +33,13 @@ char	*create_d(t_arg arg)
 				n[0] != '-')
 				*res = ' ';
 			if (ft_strchr(arg.setting, '+') || n[0] == '-')
-				*res = (*n == '-') ? *n++ : '+';
+				*res = (*n == '-') ? *n : '+';
 			while (arg.accur-- > (int)ft_strlen(n))
 				ft_strncat(res, "0", 1);
 			if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.data_numb != 0)
-				ft_strcat(res, n);
-			while (arg.width-- + (arg.accur <= 0 && arg.data_numb == 0) > (int)(ft_strlen(n) + (ft_strchr(arg.setting, '+') ||
-				ft_strchr(arg.setting, ' ')) + (((int)ft_strlen(n) >= accur)
+				ft_strcat(res, (n[0] == '-' ? n + 1 : n));
+			while (arg.width-- + (arg.accur <= 0 && arg.data_numb == 0) > (int)(ft_strlen((n[0] == '-') ? n + 1 : n) + (ft_strchr(arg.setting, '+') ||
+				ft_strchr(arg.setting, ' ') || n[0] == '-') + (((int)ft_strlen(n) >= accur)
 				? 0 : (accur - ft_strlen(n)))))
 				ft_strncat(res, " ", 1);
 		}
@@ -53,7 +53,8 @@ char	*create_d(t_arg arg)
 				&& (ft_strchr(arg.setting, '0') && arg.accur == -1))
 				ft_strncat(res, (n[0] == '-') ? "-" : (ft_strchr(arg.setting, '+')
 					? "+" : " "), 1);
-			while (arg.width + (arg.accur <= 0 && arg.data_numb == 0) > accur && arg.width-- + (arg.accur <= 0 && arg.data_numb == 0) > (int)ft_strlen((n[0] == '-')
+			while (arg.width + (arg.accur <= 0 && arg.data_numb == 0) > accur &&
+				arg.width-- + (arg.accur <= 0 && arg.data_numb == 0) > (int)ft_strlen((n[0] == '-')
 				? n + 1 : n) + ((ft_strchr(arg.setting, '+') || ft_strchr(arg.setting, ' ')
 					|| n[0] == '-') && accur <= (int)ft_strlen(n) + (n[0] == '-')))
 				ft_strncat(res, (ft_strchr(arg.setting, '0') && arg.accur == -1 ?
@@ -64,8 +65,7 @@ char	*create_d(t_arg arg)
 				ft_strncat(res, (n[0] == '-') ? "-" : (ft_strchr(arg.setting, '+')
 					? "+" : " "), 1);
 			while (accur-- > (int)ft_strlen((n[0] == '-') ? n + 1 : n) +
-				(ft_strchr(arg.setting, '+') || ft_strchr(arg.setting, ' ') ||
-					n[0] == '-'))
+				(ft_strchr(arg.setting, '+') || ft_strchr(arg.setting, ' ') || n[0] == '-'))
 				ft_strncat(res, "0", 1);
 			if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.data_numb != 0)
 				ft_strcat(res, (n[0] == '-') ? n + 1 : n);
@@ -105,7 +105,7 @@ char	*create_s(t_arg arg)
 		else
 		{
 			while (arg.width-- > ((accur != -1) ? accur : (int)ft_strlen(arg.data)))
-				ft_strncat(res, " ", 1);
+				ft_strncat(res, (ft_strchr(arg.setting, '0') ? "0" : " "), 1);
 			ft_strncat(res, arg.data, accur);
 		}
 	}
@@ -180,7 +180,7 @@ char	*create_c(t_arg arg)
 		else
 		{
 			while (arg.width-- > 1)
-				ft_strncat(res, " ", 1);
+				ft_strncat(res, (ft_strchr(arg.setting, '0') ? "0" : " "), 1);
 			res[ft_strlen(res)] = (char)arg.data_numb;
 		}
 	}

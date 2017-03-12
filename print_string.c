@@ -105,7 +105,7 @@ int		print_string(t_arg *map, const char *format, int count)
 		ft_putstr(str);
 		return (ft_strlen(str));
 	}
-	ft_strcat(str, res_str(ptr, map[0])); // SegV there!!!
+	ft_strcat(str, res_str(ptr, map[0]));
 	ptr = repoint(ptr + 1);
 	i = 1;
 	while (i < count)
@@ -113,6 +113,8 @@ int		print_string(t_arg *map, const char *format, int count)
 		ft_strncat(str, ptr, ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, '%')));
 		ptr = ft_strchr(ptr, '%');
 		ft_strcat(str, res_str(ptr, map[i]));
+		if (ptr == NULL)
+			break ;
 		ptr = repoint(ptr + 1);
 		i++;
 	}
