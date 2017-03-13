@@ -20,7 +20,7 @@ char	*res_str(char *ptr, t_arg arg)
 		|| *(arg.type) == '%')
 		return (create_c(arg));
 	else if ((ft_strnstr(arg.type, "d", 3) || ft_strnstr(arg.type, "i", 3) ||
-		ft_strchr(arg.type, 'D')) && *(arg.type) != 'z')
+		ft_strchr(arg.type, 'D') || ft_strchr(arg.type, 'n')) && !ft_strchr(arg.type, 'z'))
 		return (create_d(arg));
 	else if (ft_strnstr(arg.type, "u", 3) || ft_strnstr(arg.type, "U", 3) ||
 			ft_strnstr(arg.type, "zd", 3) || ft_strnstr(arg.type, "zi", 3))

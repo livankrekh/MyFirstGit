@@ -56,7 +56,8 @@ int		valid_type(char c)
 	if (c == 'd' || c == 'D' || c == 'i' || c == 'o' || c == 'O' || c == 'u'
 		|| c == 'U' || c == 'x' || c == 'X' || c == 'p' || c == 'f' ||
 		c == 'F' || c == 'a' || c == 'A' || c == 'g' || c == 'G' ||
-		c == 'e' || c == 'E' || c == 'S' || c == 's' || c == 'c' || c == 'C')
+		c == 'e' || c == 'E' || c == 'S' || c == 's' || c == 'c' || c == 'C'
+		|| c == 'n')
 		return (1);
 	return (0);
 }
@@ -76,10 +77,7 @@ char	*get_type(char *ptr)
 			ft_strncat(tmp, ptr + i, 1);
 		i++;
 	}
-	if (ptr[i] == 'd' || ptr[i] == 'i' || ptr[i] == 'u' || ptr[i] == 'o' ||
-		ptr[i] == 'x' || ptr[i] == 'X' || ptr[i] == 'c' || ptr[i] == 'C' ||
-		ptr[i] == 's' || ptr[i] == 'S' || ptr[i] == 'p' || ptr[i] == 'O' ||
-		ptr[i] == 'U' || ptr[i] == 'D' || ptr[i] == '%')
+	if (valid_type(ptr[i]) || ptr[i] == '%')
 		ft_strncat(tmp, ptr + i, 1);
 	else if (*ptr != ptr[i])
 		ft_strncat(tmp, ptr + i - 1, 1);
