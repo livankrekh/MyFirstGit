@@ -19,6 +19,8 @@ char	*res_str(char *ptr, t_arg arg)
 	else if (*(arg.type) == 'c' || *(arg.type) == 'C' || ft_strnstr(ptr, "lc", 2)
 		|| *(arg.type) == '%')
 		return (create_c(arg));
+	else if (ft_strchr(arg.type, 'S') || ft_strnstr(arg.type, "ls", 3))
+		return (create_w(arg.unidata));
 	else if ((ft_strnstr(arg.type, "d", 3) || ft_strnstr(arg.type, "i", 3) ||
 		ft_strchr(arg.type, 'D') || ft_strchr(arg.type, 'n')) && !ft_strchr(arg.type, 'z'))
 		return (create_d(arg));
