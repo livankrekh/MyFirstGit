@@ -45,6 +45,6 @@ char				*create_c(t_arg arg);
 int					valid_setting(char c);
 int					valid_type(char c);
 char				*repoint(char *ptr);
-char				*create_w(wchar_t *str);
+char				*create_w(const wchar_t *str);
 
 #endif

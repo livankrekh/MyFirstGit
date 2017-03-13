@@ -267,19 +267,51 @@ char	*wild(wchar_t wchar)
 	return (s);
 }
 
-char	*create_w(wchar_t *str)
+void	expand_str(char **s1, const char *s2, int pos)
 {
-	char	*res;
-	int 	i;
-	char	*tmp;
+	char	*new;
 
-	res = ft_strnew(ft_strlen((const char*)str));
-	i = 0;
-	while (str[i] != 0)
-	{
-		tmp = wild(str[i]);
-		ft_strcat(res, tmp);
-		i++;
-	}
-	return (res);
+	if (pos == 0)
+		new = ft_strjoin(s2, *s1);
+	else if (pos == 1)
+		new = ft_strjoin(*s1, s2);
+	else
+		return ;
+	free(*s1);
+	*s1 = new;
 }
+
+char	*create_w(const wchar_t *str)
+{
+	wchar_t	*s1;
+	char	*s2;
+	char	*wchar;
+
+	s1 = (wchar_t *)str;
+	s2 = ft_strnew(0);
+	while (*s1)
+	{
+		wchar = wild(*s1);
+		expand_str(&s2, wchar, 1);
+		free(wchar);
+		s1++;
+	}
+	return (s2);
+}
+
+// char	*create_w(wchar_t *str)
+// {
+// 	char	*res;
+// 	int 	i;
+// 	char	*tmp;
+
+// 	res = ft_strnew(ft_strlen((const char*)str));
+// 	i = 0;
+// 	while (str[i] != 0)
+// 	{
+// 		tmp = wild(str[i]);
+// 		ft_strncat(res, tmp, wild_len(str[i]));
+// 		i++;
+// 	}
+// 	return (res);
+// }
