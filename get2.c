@@ -92,6 +92,8 @@ char	*get_type(char *ptr)
 	else
 		ft_strcat(res, (ft_strchr(tmp, 'l') ? "l" : (ft_strstr(tmp, "hh") ? "hh" :
 			(ft_strchr(tmp, 'h') ? "h" : ""))));
-	ft_strncat(res, &tmp[ft_strlen(tmp) - 1], 1);
+	if (ft_strlen(tmp) > 0)
+		ft_strncat(res, &tmp[ft_strlen(tmp) - 1], 1);
+	free(tmp);
 	return (res);
 }

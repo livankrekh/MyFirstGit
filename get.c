@@ -21,7 +21,7 @@ char	*get_setting(char *ptr, char *type)
 		res = ft_strnew(ft_strlen(ptr) - ft_strlen(ft_strchr(ptr,
 			type[ft_strlen(type) - 1]) + 1));
 	else
-		res = ft_strnew(1);
+		res = ft_strnew(ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, type[0]) + 1));
 	i = 0;
 	while (valid_setting(ptr[i]) && ptr[i] != '\0')
 	{

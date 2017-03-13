@@ -12,35 +12,6 @@
 
 #include "ft_printf.h"
 
-int		accur(t_arg arg)
-{
-	char *type;
-
-	type = arg.type;
-	if (*type == 's')
-		return (ft_strlen(arg.data));
-	else if (*type == 'c' || !ft_strncmp(type, "hh", 2))
-		return (1);
-	else if (!ft_strncmp(type, "ls", 2) || !ft_strncmp(type, "lc", 2) ||
-		*type == 'S' || *type == 'C')
-		return (ft_strlen((char*)arg.unidata));
-	else if (!ft_strncmp(type, "d", 3) || !ft_strncmp(type, "i", 3))
-		return (ft_strlen(ft_itoa_base(arg.data_numb, 10)));
-	else if (!ft_strncmp(type, "o", 3))
-		return (ft_strlen(ft_itoa_base(arg.undata, 8)));
-	else if (!ft_strncmp(type, "u", 3))
-		return (ft_strlen(ft_itoa_base(arg.undata, 10)));
-	else if (!ft_strncmp(type, "x", 3) || !ft_strncmp(type, "X", 3))
-		return (ft_strlen(ft_itoa_base(arg.undata, 16)));
-	else if (*type == 'p')
-		return (ft_strlen(ft_itoa_base(arg.data_numb, 16)) + 2);
-	else if (*type == 'L' || *type == 'e' || *type == 'E' || *type == 'g' ||
-			*type == 'G' || *type == 'f' || *type == 'f' || *type == 'F' ||
-			*type == 'a' || *type == 'A')
-		return (ft_strlen(ft_itoa_base((intmax_t)arg.float_data, 10)) + 5);
-	return (0);
-}
-
 char	*res_str(char *ptr, t_arg arg)
 {
 	if (*(arg.type) == 's')
@@ -82,44 +53,96 @@ int 	null_count(t_arg *map, int count)
 	return (res);
 }
 
-int		print_string(t_arg *map, const char *format, int count)
+void	delete_data(t_arg *map, int count)
 {
-	char	*str;
-	int		size;
-	int		i;
-	char	*ptr;
+	int i;
 
-	size = ft_strlen(format);
 	i = 0;
 	while (i < count)
-		size += (map[i].width == 0 && map[i].accur == 0) ? accur(map[i++]) :
-				(map[i].width >= map[i].accur ? map[i++].width : map[i++].accur);
-	str = ft_strnew(size);
+	{
+		if (ft_strchr(map[i].type, 's'))
+		{
+			if (map[i].data)
+				free(map[i].data);
+		}
+		if (ft_strlen(map[i].type))
+			free(map[i].type);
+		if (ft_strlen(map[i].setting))
+			free(map[i].setting);
+		i++;
+	}
+}
+
+void	print_null(t_arg arg, int *res)
+{
+	int 	len;
+	char	*tmp;
+
+	len = 0;
+	tmp = create_c(arg);
+	if (ft_strchr(arg.setting, '-'))
+	{
+		ft_putstr(tmp);
+		write(1, "\0", 1);
+	}
+	else
+	{
+		write(1, "\0", 1);
+		ft_putstr(tmp);
+	}
+	*res += ft_strlen(tmp) + 1;
+	free(tmp);
+}
+
+int		print_string(t_arg *map, const char *format, int count)
+{
+	int		i;
+	char	*ptr;
+	int 	res;
+	char	*tmp;
+
 	i = 0;
+	res = 0;
 	while (format[i] != '%' && format[i] != '\0')
 		i++;
-	ft_strncpy(str, format, i);
+	write(1, format, i);
+	res += i;
 	ptr = ft_strchr(format, '%');
 	if (ptr == NULL)
+		return (ft_strlen(format));
+	if ((ft_strchr(map[0].type, 'c') || ft_strchr(map[0].type, 'C')) && map[0].data_numb == 0)
+		print_null(map[0], &res);
+	else
 	{
-		ft_putstr(str);
-		return (ft_strlen(str));
+		tmp = res_str(ptr, map[0]);
+		ft_putstr(tmp);
+		res += ft_strlen(tmp);
 	}
-	ft_strcat(str, res_str(ptr, map[0]));
 	ptr = repoint(ptr + 1);
 	i = 1;
 	while (i < count)
 	{
-		ft_strncat(str, ptr, ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, '%')));
+		write(1, ptr, ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, '%')));
+		res += ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, '%'));
 		ptr = ft_strchr(ptr, '%');
-		ft_strcat(str, res_str(ptr, map[i]));
+		if ((ft_strchr(map[i].type, 'c') || ft_strchr(map[0].type, 'c')) && map[i].data_numb == 0)
+			print_null(map[i], &res);
+		else
+		{
+			tmp = res_str(ptr, map[i]);
+			ft_putstr(tmp);
+		}
+		res += ft_strlen(tmp);
 		if (ptr == NULL)
 			break ;
 		ptr = repoint(ptr + 1);
+		free(tmp);
 		i++;
 	}
-	ft_strcat(str, ptr);
-	ft_putstr(str);
-	//printf("WIDTH = %d || ACCURANCE = %d || SIZE = %d || SETTING = %s || TYPE = %s\n", map[0].width, map[0].accur, size, map[0].setting, map[0].type);
-	return (ft_strlen(str) + null_count(map, count));
+	ft_putstr(ptr);
+	res += ft_strlen(ptr);
+	//printf("WIDTH = %d || ACCURANCE = %d || SETTING = |%s| || TYPE = |%s| || DATA = |%jd|\n", map[0].width, map[0].accur, map[0].setting, map[0].type, map[0].data_numb);
+	delete_data(map, count);
+	free(map);
+	return (res);
 }
