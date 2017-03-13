@@ -158,7 +158,7 @@ char	*create_un(t_arg arg, int base)
  	}
  	else
  	{
- 		if (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
+ 		if ((ft_strchr(arg.setting, '#') && (arg.undata != 0 || (ft_strchr(arg.setting, '.') && arg.accur <= 0))) && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
  			ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
  		if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.undata != 0)
 			ft_strcat(res, n);
