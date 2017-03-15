@@ -224,7 +224,7 @@ char	*create_pointer(t_arg arg)
 	return (res);
 }
 
-size_t	wild_len(wchar_t wchar)
+size_t		wild_len(wchar_t wchar)
 {
 	if (wchar > 0 && wchar < 127)
 		return (1);
@@ -240,60 +240,52 @@ size_t	wild_len(wchar_t wchar)
 		return (6);
 }
 
-char	*wild(wchar_t wchar)
+void		unicode_to_utf8_subf(wchar_t c, unsigned char **b)
 {
-	char	*s;
-	size_t	len;
-	size_t	n;
-
-	len = wild_len(wchar);
-	s = ft_strnew(len + 1);
-	if (len == 1)
-	{
-		*s = (char)wchar;
-		return (s);
-	}
-	n = len;
-	while (n)
-	{
-		if (n != 1)
-		{
-			*(s + (n - 1)) = wchar % 64 + 128;
-			wchar >>= 6;
-		}
-		n--;
-	}
-	*s = ft_power(2, 8) - ft_power(2, 8 - len) + wchar;
-	return (s);
+	**b++ = (unsigned char)(((c >> 18)) | 0xF0);
+	**b++ = (unsigned char)(((c >> 12) & 0x3F) | 0x80);
+	**b++ = (unsigned char)(((c >> 6) & 0x3F) | 0x80);
+	**b++ = (unsigned char)((c & 0x3F) | 0x80);
+	return ;
 }
 
-int		count_mem(const wchar_t *str)
+const char		*unicode_to_utf8(wchar_t c)
 {
-	int res;
-	int	i;
+	static unsigned char	b_static[5];
+	unsigned char			*b;
 
-	i = 0;
-	res = 0;
-	while (str[i] != '\0')
+	b = b_static;
+	if (c < (1 << 7))
+		*b++ = (unsigned char)(c);
+	else if (c < (1 << 11))
 	{
-		res += wild_len(str[i]);
-		i++;
+		*b++ = (unsigned char)((c >> 6) | 0xC0);
+		*b++ = (unsigned char)((c & 0x3F) | 0x80);
 	}
-	return (res);
+	else if (c < (1 << 16))
+	{
+		*b++ = (unsigned char)(((c >> 12)) | 0xE0);
+		*b++ = (unsigned char)(((c >> 6) & 0x3F) | 0x80);
+		*b++ = (unsigned char)((c & 0x3F) | 0x80);
+	}
+	else if (c < (1 << 21))
+		unicode_to_utf8_subf(c, &b);
+	*b = '\0';
+	return (const char*)b_static;
 }
 
 char	*create_w(const wchar_t *str)
 {
 	char	*res;
-	int 	i;
 	char	*tmp;
+	int		i;
 
-	res = ft_strnew(count_mem(str));
 	i = 0;
-	while (str[i] != 0)
+	res = ft_strnew(ft_strlen((char*)str) * 6);
+	while (str[i] != '\0')
 	{
-		tmp = wild(str[i]);
-		ft_strlcat(res, tmp, wild_len(str[i]));
+		tmp = (char*)unicode_to_utf8(str[i]);
+		ft_strncat(res, tmp, wild_len(str[i]));
 		i++;
 	}
 	return (res);
