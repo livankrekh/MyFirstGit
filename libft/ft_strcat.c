@@ -19,7 +19,7 @@ char	*ft_strcat(char *destptr, const char *srcptr)
 
 	i = 0;
 	j = 0;
-	if (srcptr == NULL)
+	if (srcptr == NULL || ft_strlen(srcptr) == 0)
 		return (destptr);
 	while (destptr[i] != '\0')
 		i++;

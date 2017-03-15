@@ -17,6 +17,8 @@ char	*ft_strchr(const char *str, int c)
 	char *str_pointer;
 
 	str_pointer = (char*)str;
+	if (str == NULL)
+		return (NULL);
 	while (*str_pointer != (char)c && *str_pointer != '\0')
 		str_pointer++;
 	if (*str_pointer == (char)c)
