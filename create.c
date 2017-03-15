@@ -293,7 +293,7 @@ char	*create_w(const wchar_t *str)
 	while (str[i] != 0)
 	{
 		tmp = wild(str[i]);
-		ft_strncat(res, tmp, wild_len(str[i]));
+		ft_strlcat(res, tmp, wild_len(str[i]));
 		i++;
 	}
 	return (res);
