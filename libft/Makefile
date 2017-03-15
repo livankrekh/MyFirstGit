@@ -23,7 +23,7 @@ SOURCE = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c ft_strncat
 	ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c \
 	ft_print_matrix.c ft_is_square.c ft_change.c ft_power.c ft_rot.c \
 	ft_most_visible.c ft_atoi_base.c get_next_line.c ft_itoa_base.c \
-	ft_str_toupper.c
+	ft_str_toupper.c ft_realloc.c
 O = ft_strlen.o ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o ft_strncat.o \
 	ft_strlcat.o ft_strchr.o ft_strrchr.o ft_strstr.o ft_strnstr.o ft_strcmp.o \
 	ft_strncmp.o ft_atoi.o ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o \
@@ -36,7 +36,7 @@ O = ft_strlen.o ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o ft_strncat.o \
 	ft_lstdel.o ft_lstdelone.o ft_lstnew.o ft_lstiter.o ft_lstmap.o \
 	ft_print_matrix.o ft_is_square.o ft_change.o ft_power.o ft_rot.o \
 	ft_most_visible.o ft_atoi_base.o get_next_line.o ft_itoa_base.o \
-	ft_str_toupper.o
+	ft_str_toupper.o ft_realloc.o
 
 .PHONY: all clean fclean re
 

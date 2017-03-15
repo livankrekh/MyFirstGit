@@ -91,5 +91,6 @@ int					get_next_line(const int fd, char **line);
 char				*ft_itoa_base(long long int n, int base);
 char				*ft_itoa_base_u(uintmax_t n, int base);
 char				*ft_str_toupper(const char *str);
+char				*ft_realloc(char *str, int new_size);
 
 #endif
