@@ -286,6 +286,7 @@ char	*create_w(const wchar_t *str)
 	{
 		tmp = (char*)unicode_to_utf8(str[i]);
 		ft_strncat(res, tmp, wild_len(str[i]));
+		ft_strclr(tmp);
 		i++;
 	}
 	return (res);

@@ -33,15 +33,26 @@ char	*get_setting(char *ptr, char *type)
 	return (res);
 }
 
-void	*include_data(int size, void *data)
+void	*include_data(int flag, void *data)
 {
 	char	*tmp;
+	int 	size;
+	wchar_t	*lol;
 
+	size = 0;
+	lol = (wchar_t*)data;
 	if (data == NULL)
 		return (NULL);
-	if (size == 0)
+	if (flag == 1)
+	{
+		while (lol[size] != '\0')
+			size++;
+		size = (size * 6) + 1;
+	}
+	else if (flag == 0)
 		size = ft_strlen((char*)data) + 1;
 	tmp = (void*)malloc(size);
+	bzero(tmp, size);
 	return (ft_memcpy(tmp, data, size));
 }
 
@@ -104,7 +115,7 @@ void	get_data(va_list ap, char *type, t_arg *arg)
 	if (*type == 's')
 		arg->data = include_data(0, (void*)va_arg(ap, char*));
 	else if (!ft_strncmp(type, "ls", 2) || *type == 'S')
-		arg->unidata = include_data(0, (void*)va_arg(ap, wchar_t*));
+		arg->unidata = include_data(1, (void*)va_arg(ap, wchar_t*));
 	else
 	{
 		if (*type == 'c')

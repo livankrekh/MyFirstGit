@@ -46,5 +46,6 @@ int					valid_setting(char c);
 int					valid_type(char c);
 char				*repoint(char *ptr);
 char				*create_w(const wchar_t *str);
+size_t				wild_len(wchar_t wchar);
 
 #endif
