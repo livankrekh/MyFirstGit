@@ -267,51 +267,34 @@ char	*wild(wchar_t wchar)
 	return (s);
 }
 
-void	expand_str(char **s1, const char *s2, int pos)
+int		count_mem(const wchar_t *str)
 {
-	char	*new;
+	int res;
+	int	i;
 
-	if (pos == 0)
-		new = ft_strjoin(s2, *s1);
-	else if (pos == 1)
-		new = ft_strjoin(*s1, s2);
-	else
-		return ;
-	free(*s1);
-	*s1 = new;
+	i = 0;
+	res = 0;
+	while (str[i] != '\0')
+	{
+		res += wild_len(str[i]);
+		i++;
+	}
+	return (res);
 }
 
 char	*create_w(const wchar_t *str)
 {
-	wchar_t	*s1;
-	char	*s2;
-	char	*wchar;
+	char	*res;
+	int 	i;
+	char	*tmp;
 
-	s1 = (wchar_t *)str;
-	s2 = ft_strnew(0);
-	while (*s1)
+	res = ft_strnew(count_mem(str));
+	i = 0;
+	while (str[i] != 0)
 	{
-		wchar = wild(*s1);
-		expand_str(&s2, wchar, 1);
-		free(wchar);
-		s1++;
+		tmp = wild(str[i]);
+		ft_strncat(res, tmp, wild_len(str[i]));
+		i++;
 	}
-	return (s2);
+	return (res);
 }
-
-// char	*create_w(wchar_t *str)
-// {
-// 	char	*res;
-// 	int 	i;
-// 	char	*tmp;
-
-// 	res = ft_strnew(ft_strlen((const char*)str));
-// 	i = 0;
-// 	while (str[i] != 0)
-// 	{
-// 		tmp = wild(str[i]);
-// 		ft_strncat(res, tmp, wild_len(str[i]));
-// 		i++;
-// 	}
-// 	return (res);
-// }

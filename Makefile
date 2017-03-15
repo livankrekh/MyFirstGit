@@ -82,7 +82,8 @@ LIBFT = ./libft/ft_strlen.o \
 		./libft/ft_atoi_base.o \
 		./libft/get_next_line.o \
 		./libft/ft_itoa_base.o \
-		./libft/ft_str_toupper.o
+		./libft/ft_str_toupper.o \
+		./libft/ft_realloc.o
 
 .PHONY: all $(NAME) clean fclean re
 
