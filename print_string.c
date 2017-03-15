@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-char	*res_str(char *ptr, t_arg arg, t_arg *map, size_t size)
+char	*res_str(char *ptr, t_arg arg)
 {
 	if (*(arg.type) == 's')
 		return (create_s(arg));
@@ -35,9 +35,7 @@ char	*res_str(char *ptr, t_arg arg, t_arg *map, size_t size)
 		return (ft_str_toupper(create_un(arg, 16)));
 	else if (ft_strnstr(arg.type, "p", 3))
 		return (create_pointer(arg));
-	else if (ft_strchr(arg.type, 'n'))
-		*(map->ptr) = size;
-	return ("");
+	return (NULL);
 }
 
 int 	null_count(t_arg *map, int count)
@@ -82,7 +80,7 @@ void	delete_data(t_arg *map, int count)
 	}
 }
 
-void	print_null(t_arg arg, size_t *res)
+void	print_null(t_arg arg, int *res)
 {
 	int 	len;
 	char	*tmp;
@@ -107,7 +105,7 @@ int		print_string(t_arg *map, const char *format, int count)
 {
 	int		i;
 	char	*ptr;
-	size_t	res;
+	int 	res;
 	char	*tmp;
 
 	i = 0;
@@ -123,7 +121,7 @@ int		print_string(t_arg *map, const char *format, int count)
 		print_null(map[0], &res);
 	else
 	{
-		tmp = res_str(ptr, map[0], &map[i], res);
+		tmp = res_str(ptr, map[0]);
 		ft_putstr(tmp);
 		res += ft_strlen(tmp);
 	}
@@ -138,7 +136,7 @@ int		print_string(t_arg *map, const char *format, int count)
 			print_null(map[i], &res);
 		else
 		{
-			tmp = res_str(ptr, map[i], &map[i], res);
+			tmp = res_str(ptr, map[i]);
 			ft_putstr(tmp);
 		}
 		res += ft_strlen(tmp);
