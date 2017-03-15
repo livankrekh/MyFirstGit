@@ -40,7 +40,7 @@ t_arg	*include(const char *format, va_list ap, int count)
 	{
 		ptr = ft_strchr(ptr, '%');
 		map[index].type = get_type(ptr + 1);
-		map[index].setting = get_setting(ptr + 1, map[index].type); // SEGV there
+		map[index].setting = get_setting(ptr + 1, map[index].type);
 		get_width(ptr + 1, ap, &(map[index]));
 		get_data(ap, map[index].type, &(map[index]));
 		ptr = repoint(ptr + 1);

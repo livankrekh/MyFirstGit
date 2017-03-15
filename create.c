@@ -133,23 +133,44 @@ char	*create_un(t_arg arg, int base)
 	{
 		if (ft_strchr(arg.setting, '-'))
 		{
-			if (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
- 				ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
-			while (arg.accur-- > len + ((ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && ft_strchr(arg.setting, '#') ? 2 : (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')) ? 1 : 0)))
+			if (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x')
+				|| ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o')
+				|| ft_strchr(arg.type, 'O')))
+ 				ft_strncat(res, (ft_strchr(arg.type, 'x') ||
+ 					ft_strchr(arg.type, 'X')) && arg.undata != 0 ? "0x" :
+ 				(ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
+			while (arg.accur-- > len + ((ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X'))
+				&& ft_strchr(arg.setting, '#') ? 2 : (ft_strchr(arg.setting, '#')
+					&& (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')) ? 1 : 0)))
 				ft_strncat(res, "0", 1);
 			if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.undata != 0)
 				ft_strcat(res, n);
-			while (arg.width-- + (arg.accur <= 0 && arg.undata == 0) > ((accur > len) ? accur : len) + ((ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && ft_strchr(arg.setting, '#') ? 2 : (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')) ? 1 : 0)))
+			while (arg.width-- + (arg.accur <= 0 && arg.undata == 0) >
+				((accur > len) ? accur : len) + ((ft_strchr(arg.type, 'x') ||
+					ft_strchr(arg.type, 'X')) && ft_strchr(arg.setting, '#') ? 2 :
+				(ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'o') ||
+					ft_strchr(arg.type, 'O')) ? 1 : 0)))
 				ft_strncat(res, " ", 1);
 		}
 		else
 		{
-			if (ft_strchr(arg.setting, '0') && arg.undata != 0 && accur == -1 && ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
+			if (ft_strchr(arg.setting, '0') && arg.undata != 0 && accur == -1 &&
+				ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x') ||
+					ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') ||
+					ft_strchr(arg.type, 'O')))
 				ft_strncat(res, ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') ? "0x" : "0", 2);
-			while (arg.width-- + (arg.accur <= 0 && arg.undata == 0) > ((accur > len) ? accur : len) + ((ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && ft_strchr(arg.setting, '#') ? 2 : (ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')) ? 1 : 0)))
+			while (arg.width-- + (arg.accur <= 0 && arg.undata == 0) >
+				((accur > len) ? accur : len) + ((ft_strchr(arg.type, 'x') ||
+					ft_strchr(arg.type, 'X')) && ft_strchr(arg.setting, '#') ? 2 :
+				(ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'o') ||
+					ft_strchr(arg.type, 'O')) ? 1 : 0)))
 				ft_strncat(res, (ft_strchr(arg.setting, '0') && accur == -1) ? "0" : " ", 1);
-			if (!ft_strchr(arg.setting, '0') && ft_strchr(arg.setting, '#') && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
- 				ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
+			if (!ft_strchr(arg.setting, '0') && ft_strchr(arg.setting, '#') &&
+				(ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') ||
+					ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
+ 				ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X'))
+ 					&& arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') ||
+ 						ft_strchr(arg.type, 'O') ? "0" : ""), 2);
 			while (arg.accur-- > len)
 				ft_strncat(res, "0", 1);
 			if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.undata != 0)
@@ -158,8 +179,11 @@ char	*create_un(t_arg arg, int base)
  	}
  	else
  	{
- 		if ((ft_strchr(arg.setting, '#') && (arg.undata != 0 || (ft_strchr(arg.setting, '.') && arg.accur <= 0))) && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') || ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
- 			ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) && arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
+ 		if ((ft_strchr(arg.setting, '#') && (arg.undata != 0 || (ft_strchr(arg.setting, '.') &&
+ 			arg.accur <= 0))) && (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X') ||
+ 			ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O')))
+ 			ft_strncat(res, (ft_strchr(arg.type, 'x') || ft_strchr(arg.type, 'X')) &&
+ 				arg.undata != 0 ? "0x" : (ft_strchr(arg.type, 'o') || ft_strchr(arg.type, 'O') ? "0" : ""), 2);
  		if (!ft_strchr(arg.setting, '.') || arg.accur > 0 || arg.undata != 0)
 			ft_strcat(res, n);
  	}
@@ -281,6 +305,8 @@ char	*create_w(const wchar_t *str)
 	int		i;
 
 	i = 0;
+	if (str == NULL)
+		return ("(null)");
 	res = ft_strnew(ft_strlen((char*)str) * 6);
 	while (str[i] != '\0')
 	{

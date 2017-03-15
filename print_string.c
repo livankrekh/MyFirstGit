@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-char	*res_str(char *ptr, t_arg arg)
+char	*res_str(char *ptr, t_arg arg, t_arg *map, size_t size)
 {
 	if (*(arg.type) == 's')
 		return (create_s(arg));
@@ -22,7 +22,7 @@ char	*res_str(char *ptr, t_arg arg)
 	else if (ft_strchr(arg.type, 'S') || ft_strnstr(arg.type, "ls", 3))
 		return (create_w(arg.unidata));
 	else if ((ft_strnstr(arg.type, "d", 3) || ft_strnstr(arg.type, "i", 3) ||
-		ft_strchr(arg.type, 'D') || ft_strchr(arg.type, 'n')) && !ft_strchr(arg.type, 'z'))
+		ft_strchr(arg.type, 'D')) && !ft_strchr(arg.type, 'z'))
 		return (create_d(arg));
 	else if (ft_strnstr(arg.type, "u", 3) || ft_strnstr(arg.type, "U", 3) ||
 			ft_strnstr(arg.type, "zd", 3) || ft_strnstr(arg.type, "zi", 3))
@@ -35,7 +35,9 @@ char	*res_str(char *ptr, t_arg arg)
 		return (ft_str_toupper(create_un(arg, 16)));
 	else if (ft_strnstr(arg.type, "p", 3))
 		return (create_pointer(arg));
-	return (NULL);
+	else if (ft_strchr(arg.type, 'n'))
+		*(map->ptr) = size;
+	return ("");
 }
 
 int 	null_count(t_arg *map, int count)
@@ -67,6 +69,11 @@ void	delete_data(t_arg *map, int count)
 			if (map[i].data)
 				free(map[i].data);
 		}
+		if (ft_strchr(map[i].type, 'S') || ft_strnstr(map[i].type, "ls", 3))
+		{
+			if (map[i].unidata)
+				free(map[i].unidata);
+		}
 		if (ft_strlen(map[i].type))
 			free(map[i].type);
 		if (ft_strlen(map[i].setting))
@@ -75,7 +82,7 @@ void	delete_data(t_arg *map, int count)
 	}
 }
 
-void	print_null(t_arg arg, int *res)
+void	print_null(t_arg arg, size_t *res)
 {
 	int 	len;
 	char	*tmp;
@@ -100,7 +107,7 @@ int		print_string(t_arg *map, const char *format, int count)
 {
 	int		i;
 	char	*ptr;
-	int 	res;
+	size_t	res;
 	char	*tmp;
 
 	i = 0;
@@ -116,7 +123,7 @@ int		print_string(t_arg *map, const char *format, int count)
 		print_null(map[0], &res);
 	else
 	{
-		tmp = res_str(ptr, map[0]);
+		tmp = res_str(ptr, map[0], &map[i], res);
 		ft_putstr(tmp);
 		res += ft_strlen(tmp);
 	}
@@ -131,7 +138,7 @@ int		print_string(t_arg *map, const char *format, int count)
 			print_null(map[i], &res);
 		else
 		{
-			tmp = res_str(ptr, map[i]);
+			tmp = res_str(ptr, map[i], &map[i], res);
 			ft_putstr(tmp);
 		}
 		res += ft_strlen(tmp);

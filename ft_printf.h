@@ -29,6 +29,7 @@ typedef struct		s_arg
 	long double		float_data;
 	int				width;
 	int				accur;
+	size_t			*ptr;
 }					t_arg;
 
 int					ft_printf(const char *format, ...);
@@ -47,5 +48,6 @@ int					valid_type(char c);
 char				*repoint(char *ptr);
 char				*create_w(const wchar_t *str);
 size_t				wild_len(wchar_t wchar);
+char				*create_n(t_arg *arg, size_t size);
 
 #endif

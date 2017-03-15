@@ -69,17 +69,17 @@ void	dop2(va_list ap, char *type, t_arg *arg)
 	else if (ft_strchr(type, '%'))
 		arg->data_numb = (int)'%';
 	else if (*type == 'n' || ft_strnstr(type, "hhn", 3))
-		arg->data_numb = *(va_arg(ap, int *));
+		arg->ptr = (size_t*)va_arg(ap, int *);
 	else if (ft_strnstr(type, "hn", 3))
-		arg->data_numb = *(va_arg(ap, short int *));
+		arg->ptr = (size_t*)va_arg(ap, short int*);
 	else if (ft_strnstr(type, "lln", 3))
-		arg->data_numb = *(va_arg(ap, long long int *));
+		arg->ptr = (size_t*)va_arg(ap, long long int*);
 	else if (ft_strnstr(type, "ln", 3))
-		arg->data_numb = *(va_arg(ap, long int *));
+		arg->ptr = (size_t*)va_arg(ap, long int*);
 	else if (ft_strnstr(type, "jn", 3))
-		arg->data_numb = *(va_arg(ap, intmax_t *));
+		arg->ptr = (size_t*)va_arg(ap, intmax_t*);
 	else if (ft_strnstr(type, "zn", 3))
-		arg->undata = *(va_arg(ap, size_t *));
+		arg->ptr = (size_t*)va_arg(ap, size_t*);
 }
 
 void	dop(va_list ap, char *type, t_arg *arg)
