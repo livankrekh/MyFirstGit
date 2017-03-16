@@ -12,6 +12,13 @@
 
 #include "ft_printf.h"
 
+void	dop_s(t_arg arg, int accur, char **res)
+{
+	while (arg.width-- > accur)
+		ft_strncat(*res, (ft_strchr(arg.setting, '0') ? "0" : " "), 1);
+	ft_strncat(*res, arg.data, accur);
+}
+
 char	*create_s(t_arg arg)
 {
 	char			*res;
@@ -31,11 +38,7 @@ char	*create_s(t_arg arg)
 				ft_strncat(res, " ", 1);
 		}
 		else
-		{
-			while (arg.width-- > accur)
-				ft_strncat(res, (ft_strchr(arg.setting, '0') ? "0" : " "), 1);
-			ft_strncat(res, arg.data, accur);
-		}
+			dop_s(arg, accur, &res);
 	}
 	else
 		ft_strncpy(res, arg.data, accur);

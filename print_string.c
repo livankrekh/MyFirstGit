@@ -96,10 +96,10 @@ void	stdout_str(t_arg *map, char **ptr, int count, int *res)
 			ft_putstr(tmp);
 		}
 		*res += ft_strlen(tmp);
-		free(tmp);
 		if (ptr == NULL)
 			break ;
 		*ptr = repoint(*ptr + 1);
+		free(tmp);
 		i++;
 	}
 }
