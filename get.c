@@ -15,13 +15,14 @@
 char	*get_setting(char *ptr, char *type)
 {
 	char	*res;
-	int 	i;
+	int		i;
 
 	if (ft_strlen(type) > 1)
 		res = ft_strnew(ft_strlen(ptr) - ft_strlen(ft_strchr(ptr,
 			type[ft_strlen(type) - 1]) + 1));
 	else
-		res = ft_strnew(ft_strlen(ptr) - ft_strlen(ft_strchr(ptr, type[0]) + 1));
+		res = ft_strnew(ft_strlen(ptr) -
+			ft_strlen(ft_strchr(ptr, type[0]) + 1));
 	i = 0;
 	while (valid_setting(ptr[i]) && ptr[i] != '\0')
 	{
@@ -36,7 +37,7 @@ char	*get_setting(char *ptr, char *type)
 void	*include_data(int flag, void *data)
 {
 	char	*tmp;
-	int 	size;
+	int		size;
 	wchar_t	*lol;
 
 	size = 0;
@@ -58,7 +59,9 @@ void	*include_data(int flag, void *data)
 
 void	dop2(va_list ap, char *type, t_arg *arg)
 {
-	if (*(type) == 'e' || *(type) == 'E' || *(type) == 'a' ||
+	if (ft_strnstr(type, "lc", 2) || *type == 'C')
+		arg->data_numb = (char)va_arg(ap, wchar_t);
+	else if (*(type) == 'e' || *(type) == 'E' || *(type) == 'a' ||
 		*(type) == 'A' || *(type) == 'f' || *(type) == 'F' ||
 		*(type) == 'g' || *(type) == 'G')
 		arg->float_data = va_arg(ap, double);
@@ -120,8 +123,6 @@ void	get_data(va_list ap, char *type, t_arg *arg)
 	{
 		if (*type == 'c')
 			arg->data_numb = (char)va_arg(ap, int);
-		else if (ft_strnstr(type, "lc", 2) || *type == 'C')
-			arg->data_numb = (char)va_arg(ap, wchar_t);
 		else if (!ft_strncmp(type, "hhd", 3) || !ft_strncmp(type, "hhi", 3))
 			arg->data_numb = (signed char)va_arg(ap, int);
 		else if (*type == 'd' || *type == 'i')

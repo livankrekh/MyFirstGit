@@ -36,7 +36,7 @@ int					ft_printf(const char *format, ...);
 void				get_data(va_list ap, char *type, t_arg *arg);
 char				*get_setting(char *ptr, char *type);
 char				*get_type(char *ptr);
-void				get_width(char *setting, va_list ap, t_arg *arg);
+void				get_width(char *set, va_list ap, t_arg *arg);
 int					print_string(t_arg *map, const char *format, int count);
 char				*create_s(t_arg arg);
 char				*create_d(t_arg arg);
@@ -48,5 +48,7 @@ int					valid_type(char c);
 char				*repoint(char *ptr);
 char				*create_w(const wchar_t *str);
 size_t				wild_len(wchar_t wchar);
+int					delete_all(t_arg *map, char *ptr, int res, int count);
+void				delete_data(t_arg *map, int count);
 
 #endif

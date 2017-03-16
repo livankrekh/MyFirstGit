@@ -13,7 +13,8 @@
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
 NAME = libftprintf.a
-SRC = printf.c create.c get.c get2.c print_string.c 
+SRC = printf.c create.c get.c get2.c print_string.c create_w.c create_d.c \
+		create_un.c delete.c
 OBJECT = $(SRC:.c=.o)
 LIBFT = ./libft/ft_strlen.o \
 		./libft/ft_strdup.o \

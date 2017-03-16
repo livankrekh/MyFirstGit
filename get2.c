@@ -12,30 +12,30 @@
 
 #include "ft_printf.h"
 
-void	get_width(char *setting, va_list ap, t_arg *arg)
+void	get_width(char *set, va_list ap, t_arg *arg)
 {
-	while ((*setting <= '0' || *setting > '9') && *setting != '*' &&
-		*setting != '.' && *setting != '\0' &&
-		*setting != arg->type[ft_strlen(arg->type) - 1])
-		setting++;
-	if (ft_isdigit(*setting) || *setting == '*')
+	while ((*set <= '0' || *set > '9') && *set != '*' &&
+		*set != '.' && *set != '\0' &&
+		*set != arg->type[ft_strlen(arg->type) - 1])
+		set++;
+	if (ft_isdigit(*set) || *set == '*')
 	{
-		if (*setting == '*' || *(setting + 1) == '*')
+		if (*set == '*' || *(set + 1) == '*')
 			arg->width = va_arg(ap, int);
 		else
-			arg->width = ft_atoi(setting);
+			arg->width = ft_atoi(set);
 	}
 	else
 		arg->width = 0;
-	while ((*setting != '.' || (!ft_isdigit(*(setting + 1)) &&
-		*(setting + 1) != '*')) && *setting != '\0')
-		setting++;
-	if (*setting == '.' && (ft_isdigit(*(setting + 1)) || *(setting + 1) == '*'))
+	while ((*set != '.' || (!ft_isdigit(*(set + 1)) &&
+		*(set + 1) != '*')) && *set != '\0')
+		set++;
+	if (*set == '.' && (ft_isdigit(*(set + 1)) || *(set + 1) == '*'))
 	{
-		if (*(setting + 1) == '*')
+		if (*(set + 1) == '*')
 			arg->accur = va_arg(ap, int);
 		else
-			arg->accur = ft_atoi(setting + 1);
+			arg->accur = ft_atoi(set + 1);
 	}
 	else
 		arg->accur = -1;
@@ -45,7 +45,7 @@ int		valid_setting(char c)
 {
 	if ((c == '#' || c == '-' || c == ' ' || c == '.' ||
 		ft_isdigit(c) || c == '+' || c == '*' ||
-		c == 'l'|| c == 'h' || c == 'j' || c == 'z'
+		c == 'l' || c == 'h' || c == 'j' || c == 'z'
 		|| c == 'L'))
 		return (1);
 	return (0);
@@ -60,6 +60,22 @@ int		valid_type(char c)
 		|| c == 'n')
 		return (1);
 	return (0);
+}
+
+void	to_norm(char *tmp, char **res)
+{
+	if (ft_strchr(tmp, 'z'))
+		ft_strncat(*res, "z", 1);
+	else if (ft_strchr(tmp, 'j'))
+		ft_strncat(*res, "j", 1);
+	else if (ft_strstr(tmp, "ll"))
+		ft_strncat(*res, "ll", 2);
+	else if (ft_strchr(tmp, 'l'))
+		ft_strncat(*res, "l", 1);
+	else if (ft_strstr(tmp, "hh"))
+		ft_strncat(*res, "hh", 2);
+	else if (ft_strchr(tmp, 'h'))
+		ft_strncat(*res, "h", 1);
 }
 
 char	*get_type(char *ptr)
@@ -81,15 +97,7 @@ char	*get_type(char *ptr)
 		ft_strncat(tmp, ptr + i, 1);
 	else if (*ptr != ptr[i])
 		ft_strncat(tmp, ptr + i - 1, 1);
-	if (ft_strchr(tmp, 'z'))
-		ft_strncat(res, "z", 1);
-	else if (ft_strchr(tmp, 'j'))
-		ft_strncat(res, "j", 1);
-	else if (ft_strstr(tmp, "ll"))
-		ft_strncat(res, "ll", 2);
-	else
-		ft_strcat(res, (ft_strchr(tmp, 'l') ? "l" : (ft_strstr(tmp, "hh") ? "hh" :
-			(ft_strchr(tmp, 'h') ? "h" : ""))));
+	to_norm(tmp, &res);
 	if (ft_strlen(tmp) > 0)
 		ft_strncat(res, &tmp[ft_strlen(tmp) - 1], 1);
 	free(tmp);
